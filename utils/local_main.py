@@ -1,4 +1,41 @@
+# Next Steps
+	# flask app
+	# zappa for AWS online (check the Ethan: zappa blog)
+		# figure out Zappa scheduling
+	# add multi-indexing for the position breakdowns
+
+#################################################################
+
+# Data Prep
+	# extract table for each team
+	# reduce to player, age, pos, gp, min, mpg, usage #
+	# identify team name
+# Data Calculation
+	# average team age
+	# weighted average team age by total minutes
+	# weighted average team age by USG% (statistical leader awards use a 58 / 82 (70.7%) threshold to be considered)
+	# weighted average team age by total minutes ... by position
+# Data Export
+	# export new data (by date) to local CSV file
+
+
+### archive ###
+# url = "https://www.basketball-reference.com/teams/MIN/2021.html"
+# table = soup.find("table", id = "advanced")
+
+## multi-indexing for positions
+# d_mpg = {} 
+# for i in positions: 
+#     d_mpg[i] = 'Age_By_MPG'
+# return_df.columns = pd.MultiIndex.from_tuples([(d_mpg[k], k) for k in return_df.columns])
+###############
+# from flask import Flask, render_template
+# app = Flask(__name__)
+# app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+# app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 from bs4 import BeautifulSoup
+# from jinja2 import Template
 import math
 import matplotlib
 matplotlib.use('Agg')
@@ -63,17 +100,19 @@ def avg_age_by_position_by_mpg(df, min_var, age_var, pos_var):
 	return return_df
 
 # Data Export #
-def data_tracking_export(df, file_name = 'test.csv', team_var = 'Team_Name', date_var = 'date'):
+def data_tracking_export(df, file_name = 'age_tracking.csv', team_var = 'Team_Name', date_var = 'date'):
 	df[date_var] = pd.to_datetime('today').normalize()
-	archive_df = pd.read_csv(file_name, parse_dates=[date_var], date_parser=lambda x: pd.to_datetime(x).normalize())
+	df[date_var] = df[date_var].apply(lambda x: x.strftime('%Y-%m-%d'))
+	archive_df = pd.read_csv(file_name)#, parse_dates=[date_var], date_parser=lambda x: pd.to_datetime(x).normalize())
 	df = pd.concat([archive_df, df], axis = 0).drop_duplicates(subset=[team_var, date_var], keep='last', ignore_index=True)
 	df.to_csv(file_name, index=False)
 	return df
 
-# def data_plot_export(df, age_var, export_file_name='static/avg_age_plot.png', date_var = 'date', team_var = 'Team_Name'):
-# 	# df[date_var] = pd.to_datetime(df[date_var])
-# 	df.pivot(index="date", columns="Team_Name", values="Average_Age").plot(figsize=(20,10)).legend(loc='center',bbox_to_anchor=(1.0, 0.5))
-# 	plt.savefig(export_file_name, format='png')
+
+def data_plot_export(df, age_var, export_file_name='static/avg_age_plot.png', date_var = 'date', team_var = 'Team_Name'):
+	# df[date_var] = pd.to_datetime(df[date_var])
+	df.pivot(index="date", columns="Team_Name", values="Average_Age").plot(figsize=(20,10)).legend(loc='center',bbox_to_anchor=(1.0, 0.5))
+	plt.savefig(export_file_name, format='png')
 
 ## Hard Codes ##
 df_columns_ind0 = ['Player','Age','Pos','GP','MIN','MPG','Usage']
@@ -117,16 +156,16 @@ def main():
 	# data_plot_export(full_df, 'Average_Age')
 
 	# #Print Current DF
-	print(return_df)
+	print(full_df)
 	
 	# # Flask return
 	# return render_template('view.html',  tables=[return_df.to_html(classes='data', header='true')])
 
 
 ## Main Execution ##
-# # @app.route('/', methods=['GET','POST'])
+# @app.route('/', methods=['GET','POST'])
 # def execute():
-	return main()
+# 	return main()
 
 # @app.after_request
 # def add_header(response):
@@ -135,6 +174,9 @@ def main():
 
 if __name__ == "__main__":
 	print("Execution Started")
+	## local run ##
 	main()
+	## app run ##
+	# app.run()
 
 
