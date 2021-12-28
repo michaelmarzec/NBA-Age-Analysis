@@ -12,4 +12,9 @@
   - arn:aws:lambda:us-east-2:770693421928:layer:Klayers-python38-beautifulsoup4:13
   - arn:aws:lambda:us-east-2:770693421928:layer:Klayers-python38-lxml:9
 
+### Local Processing
+ /utils/local_main.py
+
+ - accesses and updates local file ./age_tracking.csv
+ 
  
