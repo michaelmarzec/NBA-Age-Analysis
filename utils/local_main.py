@@ -1,11 +1,3 @@
-# Next Steps
-	# flask app
-	# zappa for AWS online (check the Ethan: zappa blog)
-		# figure out Zappa scheduling
-	# add multi-indexing for the position breakdowns
-
-#################################################################
-
 # Data Prep
 	# extract table for each team
 	# reduce to player, age, pos, gp, min, mpg, usage #
@@ -19,27 +11,8 @@
 	# export new data (by date) to local CSV file
 
 
-### archive ###
-# url = "https://www.basketball-reference.com/teams/MIN/2021.html"
-# table = soup.find("table", id = "advanced")
-
-## multi-indexing for positions
-# d_mpg = {} 
-# for i in positions: 
-#     d_mpg[i] = 'Age_By_MPG'
-# return_df.columns = pd.MultiIndex.from_tuples([(d_mpg[k], k) for k in return_df.columns])
-###############
-# from flask import Flask, render_template
-# app = Flask(__name__)
-# app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-# app.config['TEMPLATES_AUTO_RELOAD'] = True
-
 from bs4 import BeautifulSoup
-# from jinja2 import Template
 import math
-import matplotlib
-matplotlib.use('Agg')
-from matplotlib import pyplot as plt
 import numpy as np
 import os
 import pandas as pd
@@ -109,11 +82,6 @@ def data_tracking_export(df, file_name = 'age_tracking.csv', team_var = 'Team_Na
 	return df
 
 
-def data_plot_export(df, age_var, export_file_name='static/avg_age_plot.png', date_var = 'date', team_var = 'Team_Name'):
-	# df[date_var] = pd.to_datetime(df[date_var])
-	df.pivot(index="date", columns="Team_Name", values="Average_Age").plot(figsize=(20,10)).legend(loc='center',bbox_to_anchor=(1.0, 0.5))
-	plt.savefig(export_file_name, format='png')
-
 ## Hard Codes ##
 df_columns_ind0 = ['Player','Age','Pos','GP','MIN','MPG','Usage']
 url_p1 = 'https://cleaningtheglass.com/stats/team/'
@@ -129,7 +97,6 @@ positions = ['Point','Combo','Wing','Forward','Big']
 
 
 ## Main Process ##
-# Flask application
 def main():
 	return_df = pd.DataFrame()
 	# Data Extract
@@ -153,30 +120,13 @@ def main():
 
 	# Local Exports (Data & Plots)
 	full_df = data_tracking_export(return_df)
-	# data_plot_export(full_df, 'Average_Age')
 
-	# #Print Current DF
+	# Print Current DF
 	print(full_df)
 	
-	# # Flask return
-	# return render_template('view.html',  tables=[return_df.to_html(classes='data', header='true')])
-
-
-## Main Execution ##
-# @app.route('/', methods=['GET','POST'])
-# def execute():
-# 	return main()
-
-# @app.after_request
-# def add_header(response):
-#     response.cache_control.max_age = 0
-#     return response
 
 if __name__ == "__main__":
 	print("Execution Started")
-	## local run ##
 	main()
-	## app run ##
-	# app.run()
-
+	
 
