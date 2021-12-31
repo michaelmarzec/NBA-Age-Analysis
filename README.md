@@ -12,6 +12,11 @@
   - arn:aws:lambda:us-east-2:770693421928:layer:Klayers-python38-beautifulsoup4:13
   - arn:aws:lambda:us-east-2:770693421928:layer:Klayers-python38-lxml:9
 
+flask/zappa
+  - /flask/flask-main.py uploaded as flask app using zappa library
+    - https://15xu0h4j6i.execute-api.us-east-2.amazonaws.com/dev
+
+
 ### Local Processing
  /utils/local_main.py
 

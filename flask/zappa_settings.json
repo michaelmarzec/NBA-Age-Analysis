@@ -1,0 +1,10 @@
+{
+    "dev": {
+        "app_function": "flask-main.app",
+        "aws_region": "us-east-2",
+        "profile_name": "default",
+        "project_name": "flask",
+        "runtime": "python3.9",
+        "s3_bucket": "zappa-flask-nba-age-analysis"
+    }
+}
