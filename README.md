@@ -1,5 +1,5 @@
 # NBA-Age-Analysis
- Analysis of NBA in-season age trends
+ Analysis of NBA in-season age trends: https://15xu0h4j6i.execute-api.us-east-2.amazonaws.com/dev
 
 ## Architecture
  
@@ -15,8 +15,6 @@
 ### Zappa (Serverless Hosting)
   - /flask/flask-main.py uploaded as flask app using zappa library
   - html files located within /flask/templates/
-    - https://15xu0h4j6i.execute-api.us-east-2.amazonaws.com/dev
-
 
 ### Local Processing
   - /utils/local_main.py
