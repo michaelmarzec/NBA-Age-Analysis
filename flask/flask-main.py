@@ -18,11 +18,6 @@ import pandas as pd
 
 
 ## Functions ##
-
-def format_column_names(df):
-
-	return df
-
 def data_ingest(file_name='age_tracking.csv'):
 	df = pd.read_csv(file_name)
 	return df
@@ -64,14 +59,21 @@ def main():
 	# Cleanse for current averages
 	df_current = df_currentDate_operations(df_final)
 	
-	# return render_template('view.html',  tables=[df_current.to_html(classes='mystyle',header='true', justify='center')])
 	return df_current
 
 
 class SortableTable(Table): # https://github.com/plumdog/flask_table/blob/master/examples/sortable.py # https://stackoverflow.com/questions/43552740/best-way-to-sort-table-based-on-headers-using-flask
     id = Col('id')
-    Team_Name = Col('Team_Name')
-    Average_Age = Col('Average_Age')
+    Team_Name = Col('Team Name')
+    Average_Age = Col('Average Age')
+    Average_Age_by_Total_Min = Col('Average Age (by minutes)')
+    Average_Age_by_USG = Col('Average Age (by usage)')		
+    Point = Col('Point')	
+    Combo = Col('Combo')	
+    Wing = Col('Wing')	
+    Forward = Col('Forward')	
+    Big = Col('Big')	
+
     allow_sort = True
 
     def sort_url(self, col_key, reverse=False):
@@ -88,39 +90,17 @@ def index():
 	df = main()
 	sort = request.args.get('sort', 'id')
 	reverse = (request.args.get('direction', 'asc') == 'desc')
-	df = df.sort_values(by=[sort], ascending=reverse) ## issue
+	df = df.sort_values(by=[sort], ascending=reverse)
 	output_dict = df.to_dict(orient='records')
 	table = SortableTable(output_dict,
                           sort_by=sort,
                           sort_reverse=reverse)
-	# return table.__html__()
+
 	return render_template('view.html',  table=table.__html__())
-	# return render_template('view.html',  tables=table.__html__())#(classes='mystyle',header='true', justify='center'))#])
-	# sort = request.args.get('sort', 'id')
-	# reverse = (request.args.get('direction', 'asc') == 'desc')
 
-	# print(df)
-
-	# df = df.sort_values(by=[sort], ascending=reverse)
-	# output_dict = df.to_dict(orient='records')
-
-	# table = SortableTable(output_dict, sort_by=sort, sort_reverse=reverse)
-	# return table.__html__()
-	# df = main()
-	# sort = request.args.get('sort', 'id')
-	# reverse = (request.args.get('direction', 'asc') == 'desc')
-	# table = SortableTable(df.get_sorted_by(sort, reverse),sort_by=sort,sort_reverse=reverse)
-	# return table.__html__()
-
-
-# @app.after_request
-# def add_header(response):
-#     response.cache_control.max_age = 0
-#     return response
 
 if __name__ == "__main__":
-# 	print("Execution Started")
-# 	## app run ##
+	main() # delete
 	app.run()
 
 
