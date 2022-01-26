@@ -1,5 +1,5 @@
 # NBA-Age-Analysis
- Analysis of NBA in-season age trends: [nbaage.com](nbaage.com)
+ Analysis of NBA in-season age trends: https://nbaage.com
 
 ## Architecture
  
