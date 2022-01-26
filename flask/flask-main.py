@@ -63,7 +63,7 @@ def main():
 
 
 class SortableTable(Table): # https://github.com/plumdog/flask_table/blob/master/examples/sortable.py # https://stackoverflow.com/questions/43552740/best-way-to-sort-table-based-on-headers-using-flask
-    id = Col('id')
+    id = Col('#')
     Team_Name = Col('Team Name')
     Average_Age = Col('Average Age')
     Average_Age_by_Total_Min = Col('Average Age (by minutes)')
@@ -88,7 +88,7 @@ class SortableTable(Table): # https://github.com/plumdog/flask_table/blob/master
 @app.route('/', methods=['GET','POST'])
 def index():
 	df = main()
-	sort = request.args.get('sort', 'id')
+	sort = request.args.get('sort', 'Team_Name')
 	reverse = (request.args.get('direction', 'asc') == 'desc')
 	df = df.sort_values(by=[sort], ascending=reverse)
 	output_dict = df.to_dict(orient='records')
@@ -100,7 +100,6 @@ def index():
 
 
 if __name__ == "__main__":
-	main() # delete
 	app.run()
 
 
