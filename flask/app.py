@@ -20,6 +20,9 @@ import pandas as pd
 ## Functions ##
 def data_ingest(file_name='age_tracking.csv'):
 	df = pd.read_csv(file_name)
+	df['Team_Name'] = df['Team_Name'].str.title()
+	# df.at['Team_Name','Philadelphia 76Ers'] = 'Philadelphia 76ers'
+	# print(df)
 	return df
 
 def df_currentDate_operations(df):
@@ -63,7 +66,7 @@ def main():
 
 
 class SortableTable(Table): # https://github.com/plumdog/flask_table/blob/master/examples/sortable.py # https://stackoverflow.com/questions/43552740/best-way-to-sort-table-based-on-headers-using-flask
-    id = Col('#')
+    id = Col('#', allow_sort=False, show=False)
     Team_Name = Col('Team Name')
     Average_Age = Col('Average Age')
     Average_Age_by_Total_Min = Col('Average Age (by minutes)')
@@ -97,6 +100,10 @@ def index():
                           sort_reverse=reverse)
 
 	return render_template('view.html',  table=table.__html__())
+
+@app.route('/age_graph', methods=['GET','POST'])
+def time_graph():
+	return """<h1>A Time Graph</h1>"""
 
 
 if __name__ == "__main__":
