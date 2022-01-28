@@ -103,10 +103,10 @@ def index():
 
 @app.route('/age_graph', methods=['GET','POST'])
 def time_graph():
-	return """<h1>A Time Graph</h1>"""
+	return render_template("age_graph.html")
 
 
 if __name__ == "__main__":
-	app.run()
+	app.run(debug=True)
 
 

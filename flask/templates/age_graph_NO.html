@@ -1,0 +1,82 @@
+<!DOCTYPE html> <!-- # https://towardsdatascience.com/flask-and-chart-js-tutorial-i-d33e05fba845 -->
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<!--     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/main.css') }}"> -->
+    <meta charset="UTF-8">
+    <title>NBA-Age</title>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<canvas id="time_graph" width="400" height="400"></canvas>
+<script>
+d3
+ .csv(“sub/age_tracking.csv”)
+ .then(makeChart);
+
+function makeChart(data) {
+      var country = data.map(function(d) {return d.Team_Name;});
+      var value = data.map(function(d) {return d.Average_Age;});
+
+// get unique value of array
+    function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+      }
+    var mon_unique = month.filter( onlyUnique );
+Team_Name.forEach((pro, index) => {
+      if (pro =="ATLANTA HAWKS") {
+      ab_val.push(value[index]);
+    } else if (pro =="BOSTON CELTICS") {
+      BC_val.push(value[index]);
+    } else if (pro =="BROOKLYN NETS") {
+      mb_val.push(value[index]);
+    } else if (pro =="CHARLOTTE HORNETS") {
+      nb_val.push(value[index]);
+    }
+     else {
+      nl_val.push(value[index]);
+    }
+    });
+
+// Line chart
+    new Chart(document.getElementById("time_graph"), {
+  type: 'line',
+  data: {
+    labels: mon_unique,
+    datasets: [{
+        data: ab_val,
+        label: "ATLANTA HAWKS",
+        borderColor: "#3e95cd",
+        fill: false
+      }, {
+        data: BC_val,
+        label: "BOSTON CELTICS",
+        borderColor: "#8e5ea2",
+        fill: false
+      }, {
+        data: mb_val,
+        label: "BROOKLYN NETS",
+        borderColor: "#3cba9f",
+        fill: false
+      }, {
+        data: nb_val,
+        label: "CHARLOTTE HORNETS",
+        borderColor: "#e8c3b9",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Positive Cases of COVID in provinces of Canada'
+    },
+    hover: {
+     mode: 'index',
+     intersect: true
+    },
+  }
+});
+
+</script>
+
+</html>
