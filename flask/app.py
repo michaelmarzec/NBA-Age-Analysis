@@ -115,25 +115,55 @@ def time_graph():
 	df = df.sort_values(by=['date'])
 
 	#chart.js variable collection
-	# df['date'] = df['date'].apply(lambda x: df['date'].dt.datetime.strftime(x, '%Y-%m-%d'))
 	df['date'] = df['date'].dt.strftime('%Y-%m-%d')
 	date_series = df['date'].values.tolist()
-	# print(date_series)
 
 	atlanta_series = df['Atlanta Hawks'].values.tolist()
 	boston_series = df['Boston Celtics'].values.tolist()
 	brooklyn_series = df['Brooklyn Nets'].values.tolist()
 	charlotte_series = df['Charlotte Hornets'].values.tolist()
 	chicago_series = df['Chicago Bulls'].values.tolist()
+	cleveland_series = df['Cleveland Cavaliers'].values.tolist()
+	dallas_series = df['Dallas Mavericks'].values.tolist()
+	denver_series = df['Denver Nuggets'].values.tolist()
+	detroit_series = df['Detroit Pistons'].values.tolist()
+	gsw_series = df['Golden State Warriors'].values.tolist()
+	houston_series = df['Houston Rockets'].values.tolist()
+	indiana_series = df['Indiana Pacers'].values.tolist()
+	lac_series = df['Los Angeles Clippers'].values.tolist()
+	lal_series = df['Los Angeles Lakers'].values.tolist()
+	memphis_series = df['Memphis Grizzlies'].values.tolist()
+	miami_series = df['Miami Heat'].values.tolist()
+	milwaukee_series = df['Milwaukee Bucks'].values.tolist()
+	minnesota_series = df['Minnesota Timberwolves'].values.tolist()
+	nop_series = df['New Orleans Pelicans'].values.tolist()
+	ny_series = df['New York Knicks'].values.tolist()
+	okc_series = df['Oklahoma City Thunder'].values.tolist()
+	orlando_series = df['Orlando Magic'].values.tolist()
+	philadelphia_series = df['Philadelphia 76Ers'].values.tolist()
+	phoenix_series = df['Phoenix Suns'].values.tolist()
+	portland_series = df['Portland Trail Blazers'].values.tolist()
+	sacramento_series = df['Sacramento Kings'].values.tolist()
+	sas_series = df['San Antonio Spurs'].values.tolist()
+	toronto_series = df['Toronto Raptors'].values.tolist()
+	utah_series = df['Utah Jazz'].values.tolist()
+	washington_series = df['Washington Wizards'].values.tolist()
 
-	context = {"date_series":date_series,"atlanta_series":atlanta_series,"boston_series":boston_series,"brooklyn_series":brooklyn_series}
-	
+
+	context = {"date_series":date_series,"atlanta_series":atlanta_series,"boston_series":boston_series,"brooklyn_series":brooklyn_series, 
+				"charlotte_series": charlotte_series,"chicago_series": chicago_series, "cleveland_series": cleveland_series, "dallas_series": dallas_series, 
+				"denver_series": denver_series, "detroit_series": detroit_series, "gsw_series": gsw_series, "houston_series": houston_series, 
+				"indiana_series": indiana_series, "lac_series": lac_series, "lal_series": lal_series, "memphis_series": memphis_series, 
+				"miami_series": miami_series, "milwaukee_series": milwaukee_series, "minnesota_series": minnesota_series, "nop_series": nop_series, 
+				"ny_series": ny_series, "okc_series": okc_series, "orlando_series": orlando_series, "philadelphia_series": philadelphia_series, 
+				"phoenix_series": phoenix_series, "portland_series": portland_series, "sacramento_series": sacramento_series, "sas_series": sas_series, 
+				"toronto_series": toronto_series, "utah_series": utah_series, "washington_series": washington_series}
 
 	return render_template("age_graph.html", context=context)
 
 
 if __name__ == "__main__":
-	# time_graph()
+	time_graph()
 	app.run(debug=True)
 
 
