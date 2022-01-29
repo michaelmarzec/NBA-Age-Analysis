@@ -110,11 +110,15 @@ def time_graph():
 	df = df.pivot(index='date', columns='Team_Name')
 	df.columns = df.columns.droplevel()
 	df = df.reset_index()
-	df['date'] = pd.to_datetime(df["date"]).dt.date
+	# df['date'] = pd.to_datetime(df["date"]).dt.date
+	df['date'] = pd.to_datetime(df['date'])
 	df = df.sort_values(by=['date'])
 
 	#chart.js variable collection
+	# df['date'] = df['date'].apply(lambda x: df['date'].dt.datetime.strftime(x, '%Y-%m-%d'))
+	df['date'] = df['date'].dt.strftime('%Y-%m-%d')
 	date_series = df['date'].values.tolist()
+	# print(date_series)
 
 	atlanta_series = df['Atlanta Hawks'].values.tolist()
 	boston_series = df['Boston Celtics'].values.tolist()
@@ -129,6 +133,7 @@ def time_graph():
 
 
 if __name__ == "__main__":
+	# time_graph()
 	app.run(debug=True)
 
 
