@@ -8,6 +8,7 @@ app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
+from datetime import datetime
 import math
 # import matplotlib
 # matplotlib.use('Agg')
@@ -18,7 +19,7 @@ import pandas as pd
 
 
 ## Functions ##
-def data_ingest(file_name='age_tracking.csv'):
+def data_ingest(file_name='static/age_tracking.csv'):
 	df = pd.read_csv(file_name)
 	df['Team_Name'] = df['Team_Name'].str.title()
 	# df.at['Team_Name','Philadelphia 76Ers'] = 'Philadelphia 76ers'
@@ -62,7 +63,7 @@ def main():
 	# Cleanse for current averages
 	df_current = df_currentDate_operations(df_final)
 	
-	return df_current
+	return df_current, df_final
 
 
 class SortableTable(Table): # https://github.com/plumdog/flask_table/blob/master/examples/sortable.py # https://stackoverflow.com/questions/43552740/best-way-to-sort-table-based-on-headers-using-flask
@@ -90,7 +91,7 @@ class SortableTable(Table): # https://github.com/plumdog/flask_table/blob/master
 ## Main Execution ##
 @app.route('/', methods=['GET','POST'])
 def index():
-	df = main()
+	df, original_df = main()
 	sort = request.args.get('sort', 'Team_Name')
 	reverse = (request.args.get('direction', 'asc') == 'desc')
 	df = df.sort_values(by=[sort], ascending=reverse)
@@ -99,11 +100,32 @@ def index():
                           sort_by=sort,
                           sort_reverse=reverse)
 
-	return render_template('view.html',  table=table.__html__())
+	return render_template('age_table.html',  table=table.__html__())
 
 @app.route('/age_graph', methods=['GET','POST'])
 def time_graph():
-	return render_template("age_graph.html")
+	#prep
+	new_df, df = main()
+	df = df[['date','Team_Name','Average_Age']]
+	df = df.pivot(index='date', columns='Team_Name')
+	df.columns = df.columns.droplevel()
+	df = df.reset_index()
+	df['date'] = pd.to_datetime(df["date"]).dt.date
+	df = df.sort_values(by=['date'])
+
+	#chart.js variable collection
+	date_series = df['date'].values.tolist()
+
+	atlanta_series = df['Atlanta Hawks'].values.tolist()
+	boston_series = df['Boston Celtics'].values.tolist()
+	brooklyn_series = df['Brooklyn Nets'].values.tolist()
+	charlotte_series = df['Charlotte Hornets'].values.tolist()
+	chicago_series = df['Chicago Bulls'].values.tolist()
+
+	context = {"date_series":date_series,"atlanta_series":atlanta_series,"boston_series":boston_series,"brooklyn_series":brooklyn_series}
+	
+
+	return render_template("age_graph.html", context=context)
 
 
 if __name__ == "__main__":
