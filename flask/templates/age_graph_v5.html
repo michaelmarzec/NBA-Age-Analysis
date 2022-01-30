@@ -7,27 +7,63 @@
     <meta charset="UTF-8">
     <title>NBA-Age</title>
 </head>
+<!-- {% block script %} -->
+<!-- Code for world map-->
 <script src="https://code.highcharts.com/maps/highmaps.js"></script>
 <script src="https://code.highcharts.com/maps/modules/data.js"></script>
 <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
 <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="//github.com/downloads/lafeber/world-flags-sprite/flags32.css" /> -->
+
+
+<!-- Flag sprites service provided by Martijn Lafeber, https://github.com/lafeber/world-flags-sprite/blob/master/LICENSE -->
+<!-- <style>
+    /* Add some padding on document's body to prevent the content
+        to go underneath the header and footer */
+#container {
+    height: 00px; 
+    width: 800px; 
+    margin: 0 auto; 
+}
+
+.highcharts-tooltip>span {
+    padding: 10px;
+    white-space: normal !important;
+    width: 200px;
+}
+
+.loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+}
+
+.f32 .flag {
+    vertical-align: middle !important;
+}
+</style> -->
+<!-- {% endblock script %} -->
 
 <body>
-    <header>
-        <p class="header"> NBA-Age Analysis</p>
-        <p class="sub-header"> Insight into the trends and intricacies of NBA team age</p>
-    </header>
     <div class="redirect">
         <a href="{{url_for('index')}}">Age Table</a>&emsp;&emsp;<a href="{{url_for('time_graph')}}">Age Graph</a>
     </div>
 </body>
 
+
+<!-- {% block my_content %} -->
+
+<!-- Map Container-->
+<!-- <div id="container"></div> -->
+
+<!-- other global per country and time series chart.js canvas -->
 <div style="position: static; height:30vh; width:80vw">
     <canvas id="timeSeriesChart"></canvas>
 </div>
 
+<!-- Stime series analysis -->
 <div class="flex-wrapper">
 <div class="container">
 <script>
@@ -280,7 +316,7 @@
                 display: true,
                 position: 'top',
                 fullWidth: true,
-
+                
             }
 
         }
@@ -290,6 +326,7 @@
 </div>
 
 <div class="footer">
+<!-- <footer class="footer"> -->
     <p>Last Updated: 1/30/2022</p>
     <p>Author: Michael Marzec</p>
     <p>Email: <a href="mailto:michaelmarzec11@gmail.com">michaelmarzec11@gmail.com</a></p>
@@ -298,4 +335,6 @@
     <p>Data: <a href="https://cleaningtheglass.com/">https://cleaningtheglass.com/</a></p>
 </div>
 </div>
+
 </html>
+<!-- {% endblock my_content %} -->
