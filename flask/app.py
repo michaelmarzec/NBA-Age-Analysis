@@ -8,16 +8,15 @@ app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
+import boto3
 from datetime import datetime
 from datetime import date
+from io import StringIO
 import math
-# import matplotlib
-# matplotlib.use('Agg')
-# from matplotlib import pyplot as plt
 import numpy as np
+import os
 import pandas as pd
-
-
+import sys
 
 ## Functions ##
 def data_ingest(file_name='static/age_tracking.csv'):
@@ -26,6 +25,24 @@ def data_ingest(file_name='static/age_tracking.csv'):
 	# df.at['Team_Name','Philadelphia 76Ers'] = 'Philadelphia 76ers'
 	# print(df)
 	return df
+
+def aws_ingest():
+	aws_id = os.getenv("aws_id")
+	aws_secret = os.getenv("aws_secret")
+	client = boto3.client('s3', aws_access_key_id=aws_id, aws_secret_access_key=aws_secret)
+
+	bucket_name = 'nba-age-analysis'
+	object_key = 'age_tracking.csv'
+
+	csv_obj = client.get_object(Bucket=bucket_name, Key=object_key)
+	body = csv_obj['Body']
+	csv_string = body.read().decode('utf-8')
+
+	df = pd.read_csv(StringIO(csv_string))
+	df['Team_Name'] = df['Team_Name'].str.title()
+
+	return df
+
 
 def df_currentDate_operations(df):
 	# reduce to current date
@@ -59,7 +76,7 @@ positions = ['Point','Combo','Wing','Forward','Big']
 # Flask application
 def main():
 
-	df_final = data_ingest()
+	df_final = aws_ingest()
 
 	# Cleanse for current averages
 	df_current = df_currentDate_operations(df_final)
