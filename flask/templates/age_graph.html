@@ -3,10 +3,11 @@
 <html lang="en">
 <head>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/main.css') }}">
     <meta charset="UTF-8">
     <title>NBA-Age</title>
 </head>
-{% block script %}
+<!-- {% block script %} -->
 <!-- Code for world map-->
 <script src="https://code.highcharts.com/maps/highmaps.js"></script>
 <script src="https://code.highcharts.com/maps/modules/data.js"></script>
@@ -14,15 +15,15 @@
 <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
 <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="//github.com/downloads/lafeber/world-flags-sprite/flags32.css" /> -->
 
 
 <!-- Flag sprites service provided by Martijn Lafeber, https://github.com/lafeber/world-flags-sprite/blob/master/LICENSE -->
-<link rel="stylesheet" type="text/css" href="//github.com/downloads/lafeber/world-flags-sprite/flags32.css" />
-<style>
+<!-- <style>
     /* Add some padding on document's body to prevent the content
         to go underneath the header and footer */
 #container {
-    height: 500px; 
+    height: 00px; 
     width: 800px; 
     margin: 0 auto; 
 }
@@ -42,21 +43,27 @@
 .f32 .flag {
     vertical-align: middle !important;
 }
-</style>
-{% endblock script %}
+</style> -->
+<!-- {% endblock script %} -->
 
-{% block my_content %}
+<body>
+    <div class="redirect">
+        <a href="{{url_for('index')}}">Age Table</a>&emsp;&emsp;<a href="{{url_for('time_graph')}}">Age Graph</a>
+    </div>
+</body>
+
+
+<!-- {% block my_content %} -->
 
 <!-- Map Container-->
 <div id="container"></div>
 
 <!-- other global per country and time series chart.js canvas -->
-<div style="position: absolute; height:30vh; width:70vw">
-    <canvas id="myChart"></canvas>
+<div style="position: absolute; height:30vh; width:80vw">
     <canvas id="timeSeriesChart"></canvas>
 </div>
 
-<!-- Script for global per country and time series analysis -->
+<!-- Stime series analysis -->
 <script>
     var ctx = document.getElementById('timeSeriesChart').getContext('2d');
 
@@ -67,37 +74,243 @@
         data: {
             labels,
             datasets: [{
-                label: '# daily new confirmed',
+                label: 'Atlanta Hawks',
                 data: {{ context.atlanta_series | safe }},
-                borderWidth: 5,
+                borderWidth: 1.5,
                 fill: false,
-                borderColor: '#fc8403'
+                borderColor: '#fc8403',
+                pointRadius: 1
             }, {
-                label: '# daily new death',
+                label: 'Boston Celtics',
                 data: {{ context.boston_series | safe }},
-                borderWidth: 5,
+                borderWidth: 1.5,
                 fill: false,
-                borderColor: '#fc0367'
+                borderColor: '#fc0367',
+                pointRadius: 1
             }, {
-                    label: '# daily new recovered',
-                    data: {{ context.brooklyn_series | safe }},
-                    borderWidth: 5,
-                    fill: false,
-                    borderColor: '#03fc84'
-                }
+                label: 'Brooklyn Nets',
+                data: {{ context.brooklyn_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#03fc84',
+                pointRadius: 1
+            }, {
+                label: 'Charlotte Hornets',
+                data: {{ context.charlotte_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#b6cde3',
+                pointRadius: 1
+            }, {
+                label: 'Chicago Bulls',
+                data: {{ context.chicago_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#92bbcd',
+                pointRadius: 1
+            }, {
+                label: 'Cleveland Cavaliers',
+                data: {{ context.cleveland_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#6ba9b4',
+                pointRadius: 1
+            }, {
+                label: 'Dallas Mavericks',
+                data: {{ context.dallas_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#51887c',
+                pointRadius: 1
+            }, {
+                label: 'Denver Nuggets',
+                data: {{ context.denver_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#66a96d',
+                pointRadius: 1
+            }, {
+                label: 'Detroit Pistons',
+                data: {{ context.detroit_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#a6c87b',
+                pointRadius: 1
+            }, {
+                label: 'Golden State Warriors',
+                data: {{ context.gsw_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#ecaa6d',
+                pointRadius: 1
+            }, {
+                label: 'Houston Rockets',
+                data: {{ context.houston_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#d56247',
+                pointRadius: 1
+            }, {
+                label: 'Indiana Pacers',
+                data: {{ context.indiana_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#a43c3c',
+                pointRadius: 1
+            }, {
+                label: 'Los Angeles Clippers',
+                data: {{ context.lac_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#59160e',
+                pointRadius: 1
+            }, {
+                label: 'Los Angeles Lakers',
+                data: {{ context.lal_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#773c35',
+                pointRadius: 1
+            }, {
+                label: 'Memphis Grizzlies',
+                data: {{ context.memphis_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#9e6257',
+                pointRadius: 1
+            }, {
+                label: 'Miami Heat',
+                data: {{ context.miami_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#d3847a',
+                pointRadius: 1
+            }, {
+                label: 'Milwuakee Bucks',
+                data: {{ context.milwaukee_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#db96ad',
+                pointRadius: 1
+            }, {
+                label: 'Minnesota Timberwolves',
+                data: {{ context.minnesota_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#c277a3',
+                pointRadius: 1
+            }, {
+                label: 'New Orleans Pelicans',
+                data: {{ context.nop_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#9b5d99',
+                pointRadius: 1
+            }, {
+                label: 'New York Knicks',
+                data: {{ context.ny_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#62417d',
+                pointRadius: 1
+            }, {
+                label: 'Oklahoma City Thunder',
+                data: {{ context.okc_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#0c0f32',
+                pointRadius: 1
+            }, {
+                label: 'Orlando Magic',
+                data: {{ context.orlando_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#252a6f',
+                pointRadius: 1
+            }, {
+                label: 'Philadelphia 76ers',
+                data: {{ context.philadelphia_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#34539e',
+                pointRadius: 1
+            }, {
+                label: 'Phoenix Suns',
+                data: {{ context.phoenix_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#457bb4',
+                pointRadius: 1
+            }, {
+                label: 'Portland Trail Blazers',
+                data: {{ context.portland_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#68a5d5',
+                pointRadius: 1
+            }, {
+                label: 'Sacramento Kings',
+                data: {{ context.sacramento_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#92cade',
+                pointRadius: 1
+            }, {
+                label: 'San Antonio Spurs',
+                data: {{ context.sas_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#5a6685',
+                pointRadius: 1
+            }, {
+                label: 'Toronto Raptors',
+                data: {{ context.toronto_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#97a6b7',
+                pointRadius: 1
+            }, {
+                label: 'Utah Jazz',
+                data: {{ context.utah_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#ff8f93',
+                pointRadius: 1
+            }, {
+                label: 'Washington Wizards',
+                data: {{ context.washington_series | safe }},
+                borderWidth: 1.5,
+                fill: false,
+                borderColor: '#c26b29',
+                pointRadius: 1
+            }
             ]
         },
         options: {
             responsive: true,
             title: {
-                display: true,
-                text: 'Timeseries'
+                display: false,
+                text: 'NBA-Age Analysis'
             },
             tooltips: {
-                mode: 'index',
+                mode: 'point',
                 intersect: true
-            }}
+            }
+
+        }
     });
 
 </script>
-{% endblock my_content %}
+
+
+<footer class="footer">
+    <p>Last Updated: 1/29/2022</p>
+    <p>Author: Michael Marzec</p>
+    <p>Email: <a href="mailto:michaelmarzec11@gmail.com">michaelmarzec11@gmail.com</a></p>
+    <p>Website: <a href="https://michaelmarzec.github.io/">https://michaelmarzec.github.io/</a></p>
+    <p>Github: <a href="https://github.com/michaelmarzec/NBA-Age-Analysis/">https://github.com/michaelmarzec/NBA-Age-Analysis/</a></p>
+    <p>Data: <a href="https://cleaningtheglass.com/">https://cleaningtheglass.com/</a></p>
+</footer>
+
+</html>
+<!-- {% endblock my_content %} -->

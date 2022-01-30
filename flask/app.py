@@ -163,7 +163,6 @@ def time_graph():
 
 
 if __name__ == "__main__":
-	time_graph()
 	app.run(debug=True)
 
 
