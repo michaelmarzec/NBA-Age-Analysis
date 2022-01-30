@@ -106,7 +106,8 @@ def index():
 def time_graph():
 	#prep
 	new_df, df = main()
-	df = df[['date','Team_Name','Average_Age']]
+	print(df.columns)
+	df = df[['date','Team_Name','Average_Age_by_Total_Min']]
 	df = df.pivot(index='date', columns='Team_Name')
 	df.columns = df.columns.droplevel()
 	df = df.reset_index()

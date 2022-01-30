@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/main.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/line_chart.css') }}">
     <meta charset="UTF-8">
     <title>NBA-Age</title>
 </head>
@@ -56,14 +56,16 @@
 <!-- {% block my_content %} -->
 
 <!-- Map Container-->
-<div id="container"></div>
+<!-- <div id="container"></div> -->
 
 <!-- other global per country and time series chart.js canvas -->
-<div style="position: absolute; height:30vh; width:80vw">
+<div style="position: static; height:30vh; width:80vw">
     <canvas id="timeSeriesChart"></canvas>
 </div>
 
 <!-- Stime series analysis -->
+<div class="flex-wrapper">
+<div class="container">
 <script>
     var ctx = document.getElementById('timeSeriesChart').getContext('2d');
 
@@ -288,6 +290,20 @@
         },
         options: {
             responsive: true,
+            scales: {
+                yAxes: [{
+                          scaleLabel: {
+                            display: true,
+                            labelString: 'Average Age (by minutes)'
+                          }
+                        }],
+                xAxes: [{
+                          scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                          }
+                        }]
+                    },
             title: {
                 display: false,
                 text: 'NBA-Age Analysis'
@@ -295,22 +311,30 @@
             tooltips: {
                 mode: 'point',
                 intersect: true
+            },
+            legend: {
+                display: true,
+                position: 'top',
+                fullWidth: true,
+                
             }
 
         }
     });
 
 </script>
+</div>
 
-
-<footer class="footer">
-    <p>Last Updated: 1/29/2022</p>
+<div class="footer">
+<!-- <footer class="footer"> -->
+    <p>Last Updated: 1/30/2022</p>
     <p>Author: Michael Marzec</p>
     <p>Email: <a href="mailto:michaelmarzec11@gmail.com">michaelmarzec11@gmail.com</a></p>
     <p>Website: <a href="https://michaelmarzec.github.io/">https://michaelmarzec.github.io/</a></p>
     <p>Github: <a href="https://github.com/michaelmarzec/NBA-Age-Analysis/">https://github.com/michaelmarzec/NBA-Age-Analysis/</a></p>
     <p>Data: <a href="https://cleaningtheglass.com/">https://cleaningtheglass.com/</a></p>
-</footer>
+</div>
+</div>
 
 </html>
 <!-- {% endblock my_content %} -->
