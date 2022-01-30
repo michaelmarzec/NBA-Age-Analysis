@@ -9,6 +9,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 from datetime import datetime
+from datetime import date
 import math
 # import matplotlib
 # matplotlib.use('Agg')
@@ -100,7 +101,12 @@ def index():
                           sort_by=sort,
                           sort_reverse=reverse)
 
-	return render_template('age_table.html',  table=table.__html__())
+	today = date.today()
+	update_date = today.strftime("%m/%d/%Y")
+
+	context = {"update_date": update_date}
+
+	return render_template('age_table.html',  table=table.__html__(), context=context)
 
 @app.route('/age_graph', methods=['GET','POST'])
 def time_graph():
@@ -150,6 +156,8 @@ def time_graph():
 	utah_series = df['Utah Jazz'].values.tolist()
 	washington_series = df['Washington Wizards'].values.tolist()
 
+	today = date.today()
+	update_date = today.strftime("%m/%d/%Y")
 
 	context = {"date_series":date_series,"atlanta_series":atlanta_series,"boston_series":boston_series,"brooklyn_series":brooklyn_series, 
 				"charlotte_series": charlotte_series,"chicago_series": chicago_series, "cleveland_series": cleveland_series, "dallas_series": dallas_series, 
@@ -158,7 +166,7 @@ def time_graph():
 				"miami_series": miami_series, "milwaukee_series": milwaukee_series, "minnesota_series": minnesota_series, "nop_series": nop_series, 
 				"ny_series": ny_series, "okc_series": okc_series, "orlando_series": orlando_series, "philadelphia_series": philadelphia_series, 
 				"phoenix_series": phoenix_series, "portland_series": portland_series, "sacramento_series": sacramento_series, "sas_series": sas_series, 
-				"toronto_series": toronto_series, "utah_series": utah_series, "washington_series": washington_series}
+				"toronto_series": toronto_series, "utah_series": utah_series, "washington_series": washington_series, "update_date": update_date}
 
 	return render_template("age_graph.html", context=context)
 
