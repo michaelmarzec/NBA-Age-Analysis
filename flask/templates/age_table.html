@@ -25,15 +25,15 @@
     </header>
     <div class="redirect">
         <a href="{{url_for('index')}}">Age Table</a>&emsp;&emsp;<a href="{{url_for('time_graph')}}">Age Graph</a>
-    </div>
-    <div class ="year_select_nav">
+    <br></br>
+        <div class ="year_select_nav">
         <label>Season</label>
         <select name="season_select" onchange="location = this.value;">
             <option value="{{url_for('index')}}">2022-23</option>
             <option value="{{url_for('index_21_22')}}">2021-22</option>
         </select>
+        </div>
     </div>
-    <br>
     <div 
     id="table_div">
     </div>
