@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+        var json_data = new google.visualization.DataTable({{ table|safe }}); 
+
+        table.draw(json_data, {showRowNumber: true, sortColumn:0, sortAscending: true, height: '100%'}); //width: '100%'
+      }
+    </script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/main.css') }}">
     <meta charset="UTF-8">
@@ -14,12 +26,12 @@
     <div class="redirect">
         <a href="{{url_for('index')}}">Age Table</a>&emsp;&emsp;<a href="{{url_for('time_graph')}}">Age Graph</a>
     </div>
-    <div class="container">
-        {{ table|safe }}
+    <div 
+    id="table_div">
     </div>
     <div class="glossary">
         <h4><i>Glossary</i></h4>
-        <ul class="glossary_list"><b>Average Age:</b> Mean age per team </ul>
+        <ul class="glossary_list"><b>Average Age:</b> Mean age per team</ul>
         <ul class="glossary_list"><b>Average Age (by minutes):</b> Mean age weighted by minutes played per team</ul>
         <ul class="glossary_list"><b>Average Age (by usage):</b> Mean age weighted by usage rate per team</ul>
         <ul class="glossary_list"><b>Point:</b> Mean age of 'Point' position weighted by minutes played per team </ul>

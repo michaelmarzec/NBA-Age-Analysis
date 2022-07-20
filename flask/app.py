@@ -1,7 +1,6 @@
 # https://15xu0h4j6i.execute-api.us-east-2.amazonaws.com/dev
 
 from flask import Flask, render_template
-from flask_table import Table, Col, LinkCol
 from flask import Flask, request, url_for
 
 app = Flask(__name__)
@@ -17,13 +16,14 @@ import numpy as np
 import os
 import pandas as pd
 import sys
+import gviz_api
+import json
 
 ## Functions ##
 def data_ingest(file_name='static/age_tracking.csv'):
 	df = pd.read_csv(file_name)
 	df['Team_Name'] = df['Team_Name'].str.title()
-	# df.at['Team_Name','Philadelphia 76Ers'] = 'Philadelphia 76ers'
-	# print(df)
+	
 	return df
 
 def aws_ingest():
@@ -40,6 +40,7 @@ def aws_ingest():
 
 	df = pd.read_csv(StringIO(csv_string))
 	df['Team_Name'] = df['Team_Name'].str.title()
+	df['Team_Name'] = df['Team_Name'].str.replace('Philadelphia 76Ers','Philadelphia 76ers')
 
 	return df
 
@@ -80,31 +81,11 @@ def main():
 
 	# Cleanse for current averages
 	df_current = df_currentDate_operations(df_final)
-	
+
+	df_current = df_current.round(1)
+	df_final = df_final.round(1)
+
 	return df_current, df_final
-
-
-class SortableTable(Table): # https://github.com/plumdog/flask_table/blob/master/examples/sortable.py # https://stackoverflow.com/questions/43552740/best-way-to-sort-table-based-on-headers-using-flask
-    id = Col('#', allow_sort=False, show=False)
-    Team_Name = Col('Team Name')
-    Average_Age = Col('Average Age')
-    Average_Age_by_Total_Min = Col('Average Age (by minutes)')
-    Average_Age_by_USG = Col('Average Age (by usage)')		
-    Point = Col('Point')	
-    Combo = Col('Combo')	
-    Wing = Col('Wing')	
-    Forward = Col('Forward')	
-    Big = Col('Big')	
-
-    allow_sort = True
-
-    def sort_url(self, col_key, reverse=False):
-        if reverse:
-            direction = 'desc'
-        else:
-            direction = 'asc'
-        return url_for('index', sort=col_key, direction=direction)
-
 
 ## Main Execution ##
 @app.route('/', methods=['GET','POST'])
@@ -113,17 +94,28 @@ def index():
 	sort = request.args.get('sort', 'Team_Name')
 	reverse = (request.args.get('direction', 'asc') == 'desc')
 	df = df.sort_values(by=[sort], ascending=reverse)
-	output_dict = df.to_dict(orient='records')
-	table = SortableTable(output_dict,
-                          sort_by=sort,
-                          sort_reverse=reverse)
+
+	table_description = {"Team_Name": ("string", "Team Name"),
+						"Average_Age": ("number", "Average Age"),
+						"Average_Age_by_Total_Min": ("number", "Average Age (by minutes)"),
+						"Average_Age_by_USG": ("number", "Average Age (by usage)"),
+						"Point": ("number", "Point"),
+						"Combo": ("number", "Combo"),
+						"Wing": ("number", "Wing"),
+						"Forward": ("number", "Forward "),
+						"Big": ("number", "Big")}
+	
+	data_table = gviz_api.DataTable(table_description)
+	table_data = df.to_dict(orient='records')	
+	data_table.LoadData(table_data)
+	json_table = data_table.ToJSon(columns_order=("Team_Name",'Average_Age','Average_Age_by_Total_Min', 'Average_Age_by_USG',"Point","Combo","Wing","Forward","Big"))
 
 	today = date.today()
 	update_date = today.strftime("%m/%d/%Y")
 
 	context = {"update_date": update_date}
 
-	return render_template('age_table.html',  table=table.__html__(), context=context)
+	return render_template('age_table.html',  table=json_table, context=context)
 
 @app.route('/age_graph', methods=['GET','POST'])
 def time_graph():
@@ -164,7 +156,7 @@ def time_graph():
 	ny_series = df['New York Knicks'].values.tolist()
 	okc_series = df['Oklahoma City Thunder'].values.tolist()
 	orlando_series = df['Orlando Magic'].values.tolist()
-	philadelphia_series = df['Philadelphia 76Ers'].values.tolist()
+	philadelphia_series = df['Philadelphia 76ers'].values.tolist()
 	phoenix_series = df['Phoenix Suns'].values.tolist()
 	portland_series = df['Portland Trail Blazers'].values.tolist()
 	sacramento_series = df['Sacramento Kings'].values.tolist()
@@ -189,6 +181,9 @@ def time_graph():
 
 
 if __name__ == "__main__":
+	# df, og = main()
+	# print(df)
+	# breakpoint()
 	app.run(debug=True)
 
 
