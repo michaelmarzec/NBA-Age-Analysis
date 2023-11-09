@@ -53,7 +53,8 @@ def avg_age_by_mpg(df, min_var, age_var):
 ### note: using threshold of 58 / 82 (70.7%) of GP
 ### note: gp calculated as sum of minutes and raised to ceiling integer (as CTG tosses out garbage time, risks an 81 GP total)
 def avg_age_by_usg(df, min_var, age_var, usg_var, gp_var):
-	total_gp_threshold = math.ceil(df[min_var].sum() / 240) * (58/82)
+	# total_gp_threshold = math.ceil(df[min_var].sum() / 240) * (58/82)
+	total_gp_threshold = (df[min_var].sum() / 240) * (58/82)
 	df = df.loc[df[gp_var] >= total_gp_threshold].copy()
 	df[usg_var] = df[usg_var].str.rstrip('%').astype('float') / 100.0
 	df['usage_weight'] = df[usg_var] / df[usg_var].sum()
