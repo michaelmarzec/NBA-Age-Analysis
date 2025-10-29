@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Age Analysis | Age Tracking 2021-22</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['table']});
@@ -8,58 +13,70 @@
 
       function drawTable() {
         var table = new google.visualization.Table(document.getElementById('table_div'));
-        var json_data = new google.visualization.DataTable({{ table|safe }}); 
-
-        table.draw(json_data, {showRowNumber: true, sortColumn:0, sortAscending: true, height: '100%'}); //width: '100%'
-      }
+        var json_data = new google.visualization.DataTable({{ table|safe }});
+        
+        table.draw(json_data, {
+            showRowNumber: true, 
+            sortColumn: 0, 
+            sortAscending: true, 
+            height: '100%',
+            cssClassNames: {
+                headerRow: 'table-header',
+                tableRow: 'table-row',
+                oddTableRow: 'table-row-odd',
+                selectedTableRow: 'table-row-selected',
+                hoverTableRow: 'table-row-hover',
+                headerCell: 'table-header-cell',
+                tableCell: 'table-cell'
+            }
+        });
+    }
     </script>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/main.css') }}">
-    <meta charset="UTF-8">
-    <title>NBA-Age</title>
 </head>
 <body>
     <header>
-        <p class="header"> NBA-Age Analysis</p>
-        <p class="sub-header"> Insight into the trends of NBA team age</p>
-    </header>
-    <div class="redirect">
-        <a href="{{url_for('index')}}">Age Table</a>&emsp;&emsp;<a href="{{url_for('time_graph')}}">Age Graph</a>
-    <br></br>
-        <div class ="year_select_nav">
-        <label>Season</label>
-        <select name="season_select" onchange="location = this.value;">
-            <option value="{{url_for('index')}}">2025-26</option>
-            <option value="{{url_for('index_24_25')}}">2024-25</option>
-            <option value="{{url_for('index_23_24')}}">2023-24</option>
-            <option value="{{url_for('index_22_23')}}">2022-23</option>
-            <option selected="selected" value="{{url_for('index_21_22')}}">2021-22</option>
-        </select>
+        <h1 class="header">NBA Age Analysis</h1>
+        <p class="sub-header">Tracking NBA team age trends weighted by minutes and usage</p>
+        <div class="year_select_nav">
+            <label>Season:</label>
+            <select name="season_select" onchange="location = this.value;">
+                <option value="{{url_for('index')}}">2025-26</option>
+                <option value="{{url_for('index_24_25')}}">2024-25</option>
+                <option value="{{url_for('index_23_24')}}">2023-24</option>
+                <option value="{{url_for('index_22_23')}}">2022-23</option>
+                <option selected="selected" value="{{url_for('index_21_22')}}">2021-22</option>
+            </select>
         </div>
-    </div>
-    <div 
-    id="table_div">
-    </div>
-    <div class="glossary">
-        <h4><i>Glossary</i></h4>
-        <ul class="glossary_list"><b>Average Age:</b> Mean age per team</ul>
-        <ul class="glossary_list"><b>Average Age (by minutes):</b> Mean age weighted by minutes played per team</ul>
-        <ul class="glossary_list"><b>Average Age (by usage):</b> Mean age weighted by usage rate per team</ul>
-        <ul class="glossary_list"><b>Point:</b> Mean age of 'Point' position weighted by minutes played per team </ul>
-        <ul class="glossary_list"><b>Combo:</b> Mean age of 'Combo' position weighted by minutes played per team</ul>
-        <ul class="glossary_list"><b>Wing:</b> Mean age of 'Wing' position weighted by minutes played per team</ul>
-        <ul class="glossary_list"><b>Forward:</b> Mean age of 'Forward' position weighted by minutes played per team</ul>
-        <ul class="glossary_list"><b>Big:</b> Mean age of 'Big' position weighted by minutes played per team</ul>
-        <ul class="glossary_list">*<i>Excludes players who have played in less than 70% of team games played</i></ul>
-    </div>
+    </header>
+    
+    <nav class="redirect">
+        <a href="{{url_for('index')}}">Age Table</a>
+        <a href="{{url_for('time_graph')}}">Age Graph</a>
+    </nav>
+    
+    <div id="table_div"></div>
+    
+    <section class="glossary">
+        <h4>Glossary</h4>
+        <ul>
+            <li class="glossary_list"><b>Average Age:</b> Mean age per team</li>
+            <li class="glossary_list"><b>Average Age (by minutes):</b> Mean age weighted by minutes played per team</li>
+            <li class="glossary_list"><b>Average Age (by usage):</b> Mean age weighted by usage rate per team</li>
+            <li class="glossary_list"><b>Point:</b> Mean age of 'Point' position weighted by minutes played per team</li>
+            <li class="glossary_list"><b>Combo:</b> Mean age of 'Combo' position weighted by minutes played per team</li>
+            <li class="glossary_list"><b>Wing:</b> Mean age of 'Wing' position weighted by minutes played per team</li>
+            <li class="glossary_list"><b>Forward:</b> Mean age of 'Forward' position weighted by minutes played per team</li>
+            <li class="glossary_list"><b>Big:</b> Mean age of 'Big' position weighted by minutes played per team</li>
+            <li class="glossary_list"><i>*Excludes players who have played in less than 70% of team games played</i></li>
+        </ul>
+    </section>
+    
+    <footer class="footer">
+        <p>Last Updated: {{ context.update_date | safe }}</p>
+        <p>Author: Michael Marzec | <a href="mailto:michaelmarzec11@gmail.com">michaelmarzec11@gmail.com</a></p>
+        <p>Personal Website: <a href="https://michaelmarzec.github.io">michaelmarzec.github.io</a></p>
+        <p>Infrastructure: <a href="https://michaelmarzec.github.io/NbaAgeAnalysis-infrastructure">NbaAgeAnalysis-infrastructure</a></p>
+        <p>NBA-WP: <a href="https://nbawp.com">nbawp.com</a> | Data: <a href="https://cleaningtheglass.com/">CleaningTheGlass</a></p>
+    </footer>
 </body>
-<footer class="footer">
-    <p>Last Updated: {{ context.update_date | safe }}</p>
-    <p>Author: Michael Marzec</p>
-    <p>Email: <a href="mailto:michaelmarzec11@gmail.com">michaelmarzec11@gmail.com</a></p>
-    <p>Personal Website: <a href="https://michaelmarzec.github.io">https://michaelmarzec.github.io</a></p>
-    <p>Infrastructure: <a href="https://michaelmarzec.github.io/NbaAgeAnalysis-infrastructure">https://michaelmarzec.github.io/NbaAgeAnalysis-infrastructure/</a></p>
-    <p>NBA-WP: <a href="https://nbawp.com">nbawp.com</a></p>
-    <p>Data: <a href="https://cleaningtheglass.com/">https://cleaningtheglass.com/</a></p>
-</footer>
 </html>
