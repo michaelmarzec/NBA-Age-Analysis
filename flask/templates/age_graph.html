@@ -10,12 +10,14 @@
 
       gtag('config', 'G-58V08X5HPV');
     </script>
+    {% include '_adsense_head.html' %}
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NBA Age Analysis | Age Graph 2025-26</title>
+    <title>NBA Age Analysis | Age Graph 2026-27</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/line_chart.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/ads.css') }}">
     <script src="https://code.highcharts.com/maps/highmaps.js"></script>
     <script src="https://code.highcharts.com/maps/modules/data.js"></script>
     <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
@@ -30,7 +32,8 @@
         <div class="year_select_nav">
             <label>Season:</label>
             <select name="season_select" onchange="location = this.value;">
-                <option selected="selected" value="{{url_for('time_graph')}}">2025-26</option>
+                <option selected="selected" value="{{url_for('time_graph')}}">2026-27</option>
+                <option value="{{url_for('time_graph_25_26')}}">2025-26</option>
                 <option value="{{url_for('time_graph_24_25')}}">2024-25</option>
                 <option value="{{url_for('time_graph_23_24')}}">2023-24</option>
                 <option value="{{url_for('time_graph_22_23')}}">2022-23</option>
@@ -47,6 +50,7 @@
     <div class="chart-container">
         <canvas id="timeSeriesChart" style="height: 500px;"></canvas>
     </div>
+    {% include '_adsense_unit.html' %}
 
     <footer class="footer">
         <p>Last Updated: {{ context.update_date | safe }}</p>
@@ -54,6 +58,7 @@
         <p>Personal Website: <a href="https://michaelmarzec.github.io">michaelmarzec.github.io</a></p>
         <p>Infrastructure: <a href="https://michaelmarzec.github.io/NbaAgeAnalysis-infrastructure">NbaAgeAnalysis-infrastructure</a></p>
         <p>NBA-WP: <a href="https://nbawp.com">nbawp.com</a> | Data: <a href="https://cleaningtheglass.com/">CleaningTheGlass</a></p>
+        <p><a href="{{ url_for('privacy') }}">Privacy Policy</a></p>
     </footer>
 
     <script>

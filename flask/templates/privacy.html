@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-58V08X5HPV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-58V08X5HPV');
+    </script>
+    {% include '_adsense_head.html' %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Age Analysis | Privacy Policy</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
+</head>
+<body>
+    <header>
+        <h1 class="header">NBA Age Analysis</h1>
+        <p class="sub-header">Privacy Policy</p>
+    </header>
+
+    <nav class="redirect">
+        <a href="{{ url_for('index') }}">Age Table</a>
+        <a href="{{ url_for('time_graph') }}">Age Graph</a>
+    </nav>
+
+    <section class="glossary">
+        <h4>Overview</h4>
+        <p class="glossary_list">NBA Age Analysis (nbaage.com) is operated by Michael Marzec. This page explains what data is collected and how it is used.</p>
+
+        <h4>Analytics</h4>
+        <p class="glossary_list">We use Google Analytics to understand how visitors use the site (pages viewed, approximate location, device type, and referral source). Google Analytics may use cookies. Learn more at <a href="https://policies.google.com/privacy">Google's Privacy Policy</a>.</p>
+
+        <h4>Advertising</h4>
+        <p class="glossary_list">We use Google AdSense to display ads. Google and its partners may use cookies to serve ads based on your prior visits to this or other websites. You can opt out of personalized advertising at <a href="https://www.google.com/settings/ads">Google Ads Settings</a>.</p>
+
+        <h4>Contact</h4>
+        <p class="glossary_list">Questions about this policy: <a href="mailto:michaelmarzec11@gmail.com">michaelmarzec11@gmail.com</a></p>
+
+        <p class="glossary_list"><i>Last updated: June 2026</i></p>
+    </section>
+
+    <footer class="footer">
+        <p><a href="{{ url_for('privacy') }}">Privacy Policy</a></p>
+        <p>Author: Michael Marzec | <a href="mailto:michaelmarzec11@gmail.com">michaelmarzec11@gmail.com</a></p>
+        <p>Personal Website: <a href="https://michaelmarzec.github.io">michaelmarzec.github.io</a></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,10 @@
+.ad-container {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    overflow: hidden;
+    min-height: 90px;
+}
